@@ -1,0 +1,44 @@
+#include <Servo.h>  // Include the Servo library
+
+// Pin Definitions
+const int servoPin = 9;        // Pin to control seed dropper servo
+
+// Servo object for seed dropper
+Servo seedServo;
+
+// Timer variables for the seed dropper
+unsigned long previousMillis = 0;
+const long interval = 10000;   // Time between seed drops (10 seconds)
+
+// Setup function
+void setup() {
+  // This code runs once when the Arduino starts
+  // Initialize the servo motor
+  seedServo.attach(servoPin);
+
+  // Optional: Initialize Serial for debugging purposes
+  Serial.begin(9600);          // Start Serial communication
+  Serial.println("Seed Dropper Activated"); // Print startup message
+}
+
+// Main loop function
+void loop() {
+  // This code runs over and over again
+  unsigned long currentMillis = millis(); // Track the current time
+
+  // Timer-based seed dropper mechanism
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis; // Update the time
+
+    // Activate the servo to drop seeds
+    seedServo.write(90); // Open dropper (90° position)
+    delay(1000);         // Wait for seeds to drop (1 second)
+    seedServo.write(0);  // Close dropper (0° position)
+    
+    // Optional: Print seed drop action for debugging
+    Serial.println("Seeds Dropped!");
+  }
+
+  // Small delay (optional, can be removed or adjusted)
+  delay(500);
+}
